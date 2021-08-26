@@ -138,8 +138,9 @@ class Generator(nn.Module):
 
     def forward(self, x):
         # 当前log结果是负的，需要再取一个负数
-        test = F.log_softmax(self.proj(x), dim=-1)  # [batch, max_len, vocab]
-        return torch.abs(test)
+        # test = F.log_softmax(self.proj(x), dim=-1)  # [batch, max_len, vocab]
+        # return torch.abs(test)
+        return self.proj(x)
 
 
 def clones(module, N):
