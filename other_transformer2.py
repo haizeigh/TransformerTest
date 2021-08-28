@@ -468,8 +468,8 @@ def run_epoch(data_iter, model, loss_compute):
         mean_loss = (iteration - 1) / iteration * mean_loss + loss / iteration
         print(" this batch is over,  loss=" + str(loss))
 
-        if i == 1:
-            break
+        # if i == 1:
+        #     break
 
     try:
         fpr, tpr, thres = roc_curve(y_true, y_pred, pos_label=1)
