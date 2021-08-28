@@ -410,7 +410,7 @@ def make_model(src_vocab, tgt_vocab, N=6,
 ###################运行一个简单实例#########################
 class Batch:
 
-    def __init__(self, src, trg=None, pad=0, X_batch=None, y_seq_batch=None, y_corr_batch=None):
+    def __init__(self, src, trg=None, pad=0, X_batch=None, y_seq_batch=None, y_corr_batch=None, is_train=True):
 
         self.X_batch = Variable(X_batch, requires_grad=False)
         self.y_seq_batch = Variable(y_seq_batch, requires_grad=False)
@@ -424,8 +424,12 @@ class Batch:
         self.src_mask = (src != pad).unsqueeze(-2)  # [batch, 1, max_len]
         if trg is not None:
             ## decoder是用encoder和t-1时刻取预测t时刻
-            self.trg = trg[:, :-1]  # 去掉每行的最后一个词，表明t-1时刻
-            self.trg_y = trg[:, 1:]  # 去掉每行第一个词， 表明t时刻
+            if is_train:
+                self.trg = trg[:, :-1]  # 去掉每行的最后一个词，表明t-1时刻
+                self.trg_y = trg[:, 1:]  # 去掉每行第一个词， 表明t时刻
+            else:
+                self.trg = trg[:, :]
+                self.trg_y = trg[:, :]
             self.trg_mask = self.make_std_mask(self.trg, pad)
             self.ntokens = (self.trg_y != pad).data.sum()  # 不为pad的都计算为单词，统计数量
 
@@ -459,19 +463,20 @@ def run_epoch(data_iter, model, loss_compute):
 
         y_pred += [p for p in _target_preds.tolist()]
         y_true += [t for t in _target_labels.tolist()]
-        try:
-            fpr, tpr, thres = roc_curve(y_true, y_pred, pos_label=1)
-            auc_score = auc(fpr, tpr)
-        except ValueError:
-            auc_score = 0.0
-            loss = 999999.9
-
         # print("loss=" + str(loss))
         iteration = i+1
         mean_loss = (iteration - 1) / iteration * mean_loss + loss / iteration
-        # print(" this epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format(iteration, auc_score,
-        #                                                                                    mean_loss))
+        print(" this batch is over,  loss=" + str(loss))
 
+        if i == 1:
+            break
+
+    try:
+        fpr, tpr, thres = roc_curve(y_true, y_pred, pos_label=1)
+        auc_score = auc(fpr, tpr)
+    except ValueError:
+        auc_score = 0.0
+        loss = 999999.9
         # total_loss += loss
         # total_tokens += batch.ntokens
         # tokens += batch.ntokens
@@ -481,7 +486,6 @@ def run_epoch(data_iter, model, loss_compute):
         #     start = time.time()
         #     tokens = 0
 
-    print( " this epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format( iteration, auc_score, mean_loss ))
     return mean_loss, auc_score
 
 
@@ -697,7 +701,7 @@ def data_gen(data:BatchGenerator):
 
         src = Variable(origin_problem_correct_seqs_long, requires_grad=False)
         tgt = Variable(origin_problem_correct_seqs_long, requires_grad=False)
-        yield Batch(src, tgt , 0, X_batch, y_seq_batch, y_corr_batch)
+        yield Batch(src, tgt , 0, X_batch, y_seq_batch, y_corr_batch, data.is_train)
 
 
 # Compute loss
@@ -756,14 +760,19 @@ model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
 for epoch in range(num_epochs):
     model.train()
     # run_epoch(data_gen(V, 30, 20), model,
-    run_epoch(data_gen(data_train), model,
+    data_train.reset_cursor()
+    mean_loss, auc_score = run_epoch(data_gen(data_train), model,
               SimpleLossCompute(model.generator, criterion, model_opt))
+    print( " this train_epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format( epoch, auc_score, mean_loss ))
+
     model.eval()
     # print(run_epoch(data_gen(V, 30, 5), model,
     # print(run_epoch(data_gen(data_test), model,
     #                 SimpleLossCompute(model.generator, criterion, None)))
-    run_epoch(data_gen(data_test), model,
+    data_test.reset_cursor()
+    test_mean_loss, test_auc_score = run_epoch(data_gen(data_test), model,
               SimpleLossCompute(model.generator, criterion, None))
+    print( " this test_epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format( epoch, test_auc_score, test_mean_loss ))
 
 
 def greedy_decode(model, src, src_mask, max_len, start_symbol):
@@ -783,11 +792,12 @@ def greedy_decode(model, src, src_mask, max_len, start_symbol):
     return ys
 
 
-model.eval()
-src = Variable(torch.LongTensor([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]))
-src_mask = Variable(torch.ones(1, 1, 10))
+print("over")
+# model.eval()
+# src = Variable(torch.LongTensor([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]))
+# src_mask = Variable(torch.ones(1, 1, 10))
 # print("ys:"+str(ys))
-print(greedy_decode(model, src, src_mask, max_len=10, start_symbol=1))
+# print(greedy_decode(model, src, src_mask, max_len=10, start_symbol=1))
 
 # Epoch Step: 1 Loss: 2.861889 Tokens per Sec: 2006.179199
 # Epoch Step: 1 Loss: 1.861335 Tokens per Sec: 2674.957764
