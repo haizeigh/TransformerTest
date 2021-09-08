@@ -34,7 +34,7 @@ parser.add_argument("--num_runs", type=int, default=1,
                     help="Number of runs to repeat the experiment.")
 parser.add_argument("--num_epochs", type=int, default=10,
                     help="Maximum number of epochs to train the network.")
-parser.add_argument("--batch_size", type=int, default=32,
+parser.add_argument("--batch_size", type=int, default=8,
                     help="The mini-batch size used when training the network.")
 # data file configuration
 parser.add_argument('--data_dir', type=str, default='./data/',
@@ -45,7 +45,8 @@ parser.add_argument('--test_file', type=str, default='skill_id_test.csv',
                     help="train data file, default as 'skill_id_test.csv'.")
 parser.add_argument("-csd", "--ckpt_save_dir", type=str, default=None,
                     help="checkpoint save directory")
-parser.add_argument('--dataset', type=str, default='a2009')
+# a2009 a2009u a2015 synthetic statics assistment_challenge toy
+parser.add_argument('--dataset', type=str, default='statics')
 args = parser.parse_args()
 
 # rnn_cells = {
@@ -466,7 +467,7 @@ def run_epoch(data_iter, model, loss_compute):
         # print("loss=" + str(loss))
         iteration = i+1
         mean_loss = (iteration - 1) / iteration * mean_loss + loss / iteration
-        print(" this batch is over,  loss=" + str(loss))
+        # print(" this batch is over,  loss=" + str(loss))
 
         # if i == 1:
         #     break
@@ -688,6 +689,7 @@ def data_gen(data:BatchGenerator):
     # data_train = data.train
     # data_test = data.test
     # data_train.next_batch()
+    print("batches="+str(data.num_batches))
 
     for i in range(data.num_batches):
         # todo 是否处理句首都是1?
@@ -701,6 +703,7 @@ def data_gen(data:BatchGenerator):
 
         src = Variable(origin_problem_correct_seqs_long, requires_grad=False)
         tgt = Variable(origin_problem_correct_seqs_long, requires_grad=False)
+        # print("this batch index = "+str(i))
         yield Batch(src, tgt , 0, X_batch, y_seq_batch, y_corr_batch, data.is_train)
 
 

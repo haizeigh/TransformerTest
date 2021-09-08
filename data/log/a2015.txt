@@ -1,0 +1,57 @@
+/home/westwell/anaconda3/envs/TransformerTest38/bin/python /snap/pycharm-professional/254/plugins/python/helpers/pydev/pydevd.py --multiproc --qt-support=auto --client 127.0.0.1 --port 44707 --file /newdisk/PycharmProjects/TransformerTest/other_transformer2.py
+Connected to pydev debugger (build 212.5080.64)
+Reading ./data/assist2015/assist2015_train.csv
+47799 lines was read
+max_num_problems_answered: 632
+num_problems: 100
+The number of students is 15337
+Finish reading data.
+Reading ./data/assist2015/assist2015_test.csv
+11952 lines was read
+max_num_problems_answered: 390
+num_problems: 100
+The number of students is 3835
+Finish reading data.
+batches=1917
+ this train_epoch is over, Epoch    0,  AUC: 0.67987,  mean_loss: 0.63328
+batches=479
+ this test_epoch is over, Epoch    0,  AUC: 0.94412,  mean_loss: 0.43966
+batches=1917
+ this train_epoch is over, Epoch    1,  AUC: 0.71671,  mean_loss: 0.59334
+batches=479
+ this test_epoch is over, Epoch    1,  AUC: 0.95285,  mean_loss: 0.42683
+batches=1917
+ this train_epoch is over, Epoch    2,  AUC: 0.72584,  mean_loss: 0.58653
+batches=479
+ this test_epoch is over, Epoch    2,  AUC: 0.95586,  mean_loss: 0.41828
+batches=1917
+ this train_epoch is over, Epoch    3,  AUC: 0.73051,  mean_loss: 0.58294
+batches=479
+ this test_epoch is over, Epoch    3,  AUC: 0.95298,  mean_loss: 0.41708
+batches=1917
+ this train_epoch is over, Epoch    4,  AUC: 0.73397,  mean_loss: 0.58064
+batches=479
+ this test_epoch is over, Epoch    4,  AUC: 0.9504,  mean_loss: 0.41588
+batches=1917
+ this train_epoch is over, Epoch    5,  AUC: 0.73666,  mean_loss: 0.5789
+batches=479
+ this test_epoch is over, Epoch    5,  AUC: 0.95355,  mean_loss: 0.41155
+batches=1917
+ this train_epoch is over, Epoch    6,  AUC: 0.73939,  mean_loss: 0.57764
+batches=479
+ this test_epoch is over, Epoch    6,  AUC: 0.95429,  mean_loss: 0.41204
+batches=1917
+ this train_epoch is over, Epoch    7,  AUC: 0.74051,  mean_loss: 0.57688
+batches=479
+ this test_epoch is over, Epoch    7,  AUC: 0.95445,  mean_loss: 0.41107
+batches=1917
+ this train_epoch is over, Epoch    8,  AUC: 0.74168,  mean_loss: 0.57625
+batches=479
+ this test_epoch is over, Epoch    8,  AUC: 0.95224,  mean_loss: 0.4127
+batches=1917
+ this train_epoch is over, Epoch    9,  AUC: 0.7428,  mean_loss: 0.57548
+batches=479
+ this test_epoch is over, Epoch    9,  AUC: 0.95128,  mean_loss: 0.41234
+over
+
+Process finished with exit code 0

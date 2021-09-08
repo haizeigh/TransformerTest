@@ -115,7 +115,7 @@ class BatchGenerator:
         self.batch_size = batch_size
         self.num_problems = num_problems
         self.num_samples = len(problem_seqs)
-        self.num_batches = len(problem_seqs) // batch_size + 1
+        self.num_batches = len(problem_seqs) // batch_size
         self.input_processor = input_processor
         self._current_batch = None
         self.is_train = True
