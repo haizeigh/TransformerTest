@@ -1,3 +1,5 @@
+import os.path
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -781,6 +783,10 @@ for epoch in range(num_epochs):
     print( " this test_epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format( epoch, test_auc_score, test_mean_loss ))
     if test_auc_score > min_auc_score:
         min_auc_score = test_auc_score
+
+        path = "model/"+dataset
+        if not os.path.exists(path):
+            os.makedirs(path)
 
         model_name = "model/"+dataset+"/model_{0:.5f}.pt".format(test_auc_score)
         save(model.state_dict(), model_name)
