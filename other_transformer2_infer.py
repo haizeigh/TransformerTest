@@ -6,7 +6,6 @@ import math, copy, time
 # from torch.autograd import Variabs
 from torch.autograd import Variable
 from sklearn.metrics import roc_curve, auc
-from other_transformer2_infer import inference
 from torch import save, load, no_grad, LongTensor
 
 import argparse
@@ -743,68 +742,29 @@ class SimpleLossCompute:
             self.opt.optimizer.zero_grad()
         return loss.data.item(), target_logits, target_labels
 
-# 加载数据
-# train_path = './data/problems_correct_train_transformer.csv'
-data = DKTData(train_path, test_path, batch_size=batch_size)
-data_train = data.train
-data_test = data.test
-num_problems = data.num_problems
-length = data.max_seq_length
-# V = 11
-# V = 8
-# network_config['lambda_w1'] = args.lambda_w1
-# network_config['lambda_w2'] = args.lambda_w2
-# network_config['lambda_o'] = args.lambda_o
-
-criterion = LabelSmoothing(size=num_problems , padding_idx=0, smoothing=0.0, lambda_w1=args.lambda_w1, lambda_w2=args.lambda_w2, lambda_o=args.lambda_o )
-model = make_model(num_problems * 2, num_problems * 2, N=2)
-model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
-                    torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
-
-min_auc_score = 0
-# for epoch in range(10):
-for epoch in range(num_epochs):
-    model.train()
-    # run_epoch(data_gen(V, 30, 20), model,
-    data_train.reset_cursor()
-    mean_loss, auc_score = run_epoch(data_gen(data_train), model,
-              SimpleLossCompute(model.generator, criterion, model_opt))
-    print( " this train_epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format( epoch, auc_score, mean_loss ))
-
-    model.eval()
-    # print(run_epoch(data_gen(V, 30, 5), model,
-    # print(run_epoch(data_gen(data_test), model,
-    #                 SimpleLossCompute(model.generator, criterion, None)))
-    data_test.reset_cursor()
-    test_mean_loss, test_auc_score = run_epoch(data_gen(data_test), model,
-              SimpleLossCompute(model.generator, criterion, None))
-    print( " this test_epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format( epoch, test_auc_score, test_mean_loss ))
-    if test_auc_score > min_auc_score:
-        min_auc_score = test_auc_score
-
-        model_name = "model/"+dataset+"/model_{0:.5f}.pt".format(test_auc_score)
-        save(model.state_dict(), model_name)
-
-        inference(model_name, test_path, num_problems)
-
-def greedy_decode(model, src, src_mask, max_len, start_symbol):
-    memory = model.encode(src, src_mask)
-    # ys是decode的时候起始标志
-    ys = torch.ones(1, 1).fill_(start_symbol).type_as(src.data)
-    print(ys)
-    for i in range(max_len - 1):
-        out = model.decode(memory, src_mask, Variable(ys),
-                           Variable(subsequent_mask(ys.size(1)).type_as(src.data)))
-        prob = model.generator(out[:, -1])
-        _, next_word = torch.max(prob, dim=1)
-        next_word = next_word.data[0]
-        ys = torch.cat([ys,
-                        torch.ones(1, 1).type_as(src.data).fill_(next_word)], dim=1)
-        print("ys:" + str(ys))
-    return ys
 
 
-print("over")
+def inference(model_name, test_path, num_problems):
+    criterion_infer = LabelSmoothing(size=num_problems, padding_idx=0, smoothing=0.0, lambda_w1=args.lambda_w1,
+                               lambda_w2=args.lambda_w2, lambda_o=args.lambda_o)
+
+    data_infer = DKTData(test_path, test_path, batch_size=batch_size)
+    data_test_infer = data_infer.test
+    data_test_infer.reset_cursor()
+
+
+    model_infer = make_model(num_problems * 2, num_problems * 2, N=2)
+    model_infer.load_state_dict(load(model_name))
+    model_infer.eval()
+
+    test_mean_loss_infer, test_auc_score_infer = run_epoch(data_gen(data_test_infer), model_infer,
+                                           SimpleLossCompute(model_infer.generator, criterion_infer, None))
+    print(" this inference_epoch is over,  AUC: {0:.5},  mean_loss: {1:.5}, model_name: {2}".format( test_auc_score_infer,
+                                                                                    test_mean_loss_infer,
+                                                                                    model_name))
+
+
+
 # model.eval()
 # src = Variable(torch.LongTensor([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]))
 # src_mask = Variable(torch.ones(1, 1, 10))
