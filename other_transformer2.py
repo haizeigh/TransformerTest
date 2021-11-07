@@ -424,6 +424,9 @@ class Batch:
 
         self.max_step = y_seq_batch.size(1)
 
+        # add flag
+        self.is_train = is_train
+
         # src=tgt: [batch_size, max_len] = [30, 10]
         self.src = src
         # padding_mask
@@ -619,6 +622,7 @@ class LabelSmoothing(nn.Module):
 
         # 预测下一步的结果和实际下一步的结果，计算交叉熵
         loss_1 = self.criterion(target_logits, target_labels).float()
+        # print(target_labels.numpy())
         # loss_1 = cross_entropy
         loss = torch.tensor(0).float()
         loss += loss_1
@@ -741,10 +745,14 @@ class SimpleLossCompute:
         #                       y.contiguous().view(-1)) / norm
         loss, target_logits, target_labels = self.criterion( x.contiguous().view(-1, x.size(-1) ), y.contiguous().view(-1) ,y_seq_batch , y_corr_batch, batch )
 
-        loss.backward()
-        if self.opt is not None:
-            self.opt.step()
-            self.opt.optimizer.zero_grad()
+#todo test : add train flag
+        if batch.is_train:
+            print( "batch.is_train=", batch.is_train )
+            loss.backward()
+            if self.opt is not None:
+                self.opt.step()
+                self.opt.optimizer.zero_grad()
+
         return loss.data.item(), target_logits, target_labels
 
 # 加载数据
