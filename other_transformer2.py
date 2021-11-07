@@ -142,9 +142,10 @@ class Generator(nn.Module):
         self.proj = nn.Linear(d_model, vocab)
 
     def forward(self, x):
-        # 当前log结果是负的，需要再取一个负数
         # test = F.log_softmax(self.proj(x), dim=-1)  # [batch, max_len, vocab]
         # return torch.abs(test)
+
+        #直接用一个网络 d_model ——> vocab
         return self.proj(x)
 
 
@@ -462,7 +463,7 @@ def run_epoch(data_iter, model, loss_compute):
     for i, batch in enumerate(data_iter):
         # batch.tgt: t-1时刻
         # batch.tgt_y: t时刻
-        # out: transformer输出的预测
+        # out: transformer输出的预测 输入序列[x1,x2...]   每一个x对应 m个可能性  输出序列[ [y1(内涵嵌入维度),y1(内涵嵌入维度),y3(内涵嵌入维度)...]  ]
         out = model.forward(batch.src, batch.trg, batch.src_mask, batch.trg_mask)
         loss, _target_preds, _target_labels = loss_compute(out, batch, batch.ntokens)
 
@@ -721,9 +722,10 @@ class SimpleLossCompute:
         self.opt = opt
 
     def __call__(self, x, batch, norm):
-        # x对应于out，也就是预测的时刻[batch_size, max_length-1, vocab_size]
+        # x对应于out，也就是预测的时刻[batch_size, max_length-1, d_model]
         # y对应于tgt_y,也就是t时刻 [batch_size, max_length-1]
         x = self.generator(x)
+        # 此时x对应预测的时刻[batch_size, max_length-1, vocab_size]
 
         y= batch.trg_y
         y_seq_batch = batch.y_seq_batch
@@ -791,7 +793,7 @@ for epoch in range(num_epochs):
         model_name = "model/"+dataset+"/model_{0:.5f}.pt".format(test_auc_score)
         save(model.state_dict(), model_name)
 
-        inference(model_name, test_path, num_problems)
+        # inference(model_name, test_path, num_problems)
 
 def greedy_decode(model, src, src_mask, max_len, start_symbol):
     memory = model.encode(src, src_mask)
