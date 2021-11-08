@@ -27,7 +27,7 @@ parser.add_argument("-kp", "--keep_prob", type=float, default=0.5,
                     help="Keep probability when training the network.")
 parser.add_argument("-mgn", "--max_grad_norm", type=float, default=5.0,
                     help="The maximum gradient norm allowed when clipping.")
-parser.add_argument("-lw1", "--lambda_w1", type=float, default=0.30,
+parser.add_argument("-lw1", "--lambda_w1", type=float, default=0.0030,
                     help="The lambda coefficient for the regularization waviness with l1-norm.")
 parser.add_argument("-lw2", "--lambda_w2", type=float, default=3.00,
                     help="The lambda coefficient for the regularization waviness with l2-norm.")
@@ -38,7 +38,7 @@ parser.add_argument("--num_runs", type=int, default=1,
                     help="Number of runs to repeat the experiment.")
 parser.add_argument("--num_epochs", type=int, default=10,
                     help="Maximum number of epochs to train the network.")
-parser.add_argument("--batch_size", type=int, default=2,
+parser.add_argument("--batch_size", type=int, default=4,
                     help="The mini-batch size used when training the network.")
 # data file configuration
 parser.add_argument('--data_dir', type=str, default='./data/',
@@ -50,7 +50,7 @@ parser.add_argument('--test_file', type=str, default='skill_id_test.csv',
 parser.add_argument("-csd", "--ckpt_save_dir", type=str, default=None,
                     help="checkpoint save directory")
 # a2009 a2009u a2015 synthetic statics assistment_challenge toy
-parser.add_argument('--dataset', type=str, default='statics')
+parser.add_argument('--dataset', type=str, default='a2009')
 args = parser.parse_args()
 
 # rnn_cells = {
@@ -747,7 +747,7 @@ class SimpleLossCompute:
 
 #todo test : add train flag
         if batch.is_train:
-            print( "batch.is_train=", batch.is_train )
+            # print( "batch.is_train=", batch.is_train )
             loss.backward()
             if self.opt is not None:
                 self.opt.step()
