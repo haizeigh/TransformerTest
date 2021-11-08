@@ -38,7 +38,7 @@ parser.add_argument("--num_runs", type=int, default=1,
                     help="Number of runs to repeat the experiment.")
 parser.add_argument("--num_epochs", type=int, default=10,
                     help="Maximum number of epochs to train the network.")
-parser.add_argument("--batch_size", type=int, default=8,
+parser.add_argument("--batch_size", type=int, default=2,
                     help="The mini-batch size used when training the network.")
 # data file configuration
 parser.add_argument('--data_dir', type=str, default='./data/',
@@ -713,7 +713,7 @@ def data_gen(data:BatchGenerator):
         src = Variable(origin_problem_correct_seqs_long, requires_grad=False)
         tgt = Variable(origin_problem_correct_seqs_long, requires_grad=False)
         # print("this batch index = "+str(i))
-        yield Batch(src, tgt , 0, X_batch, y_seq_batch, y_corr_batch, data.is_train)
+        yield Batch(src, tgt , 0, X_batch, y_seq_batch, y_corr_batch, is_train = True )
 
 
 # Compute loss

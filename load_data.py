@@ -120,7 +120,7 @@ class BatchGenerator:
         self._current_batch = None
         self.is_train = True
 
-    def next_batch(self):
+    def next_batch(self, is_train = True):
         start_idx = self.cursor * self.batch_size
         end_idx = min((self.cursor + 1) * self.batch_size, self.num_samples)
         problem_seqs = self.problem_seqs[start_idx:end_idx]
@@ -130,7 +130,7 @@ class BatchGenerator:
         self._current_batch = self.input_processor.process_problems_and_corrects(problem_seqs,
                                                                                  correct_seqs,
                                                                                  self.num_problems,
-                                                                                 is_train=self.is_train)
+                                                                                 is_train= is_train)
         self._update_cursor()
 
         # 这是一个元组 第一个是训练数据的组合  第二个是测试数据的题目编号的onehot  第三个测试数据的题目结果的onehot
