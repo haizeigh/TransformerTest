@@ -36,7 +36,7 @@ parser.add_argument("-lo", "--lambda_o", type=float, default=0.10,
 # training configuration
 parser.add_argument("--num_runs", type=int, default=1,
                     help="Number of runs to repeat the experiment.")
-parser.add_argument("--num_epochs", type=int, default=10,
+parser.add_argument("--num_epochs", type=int, default=20,
                     help="Maximum number of epochs to train the network.")
 parser.add_argument("--batch_size", type=int, default=4,
                     help="The mini-batch size used when training the network.")
@@ -769,7 +769,7 @@ length = data.max_seq_length
 # network_config['lambda_o'] = args.lambda_o
 
 criterion = LabelSmoothing(size=num_problems , padding_idx=0, smoothing=0.0, lambda_w1=args.lambda_w1, lambda_w2=args.lambda_w2, lambda_o=args.lambda_o )
-model = make_model(num_problems * 2, num_problems * 2, N=2)
+model = make_model(num_problems * 2, num_problems * 2, N=6)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
                     torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
 
