@@ -1,0 +1,81 @@
+/home/westwell/anaconda3/envs/TransformerTest38/bin/python /snap/pycharm-professional/260/plugins/python/helpers/pydev/pydevd.py --multiproc --qt-support=auto --client 127.0.0.1 --port 32861 --file /newdisk/PycharmProjects/TransformerTest/other_transformer2.py
+Connected to pydev debugger (build 212.5457.59)
+Reading ./data/STATICS/STATICS_train.csv
+687 lines was read
+max_num_problems_answered: 1181
+num_problems: 1224
+The number of students is 229
+Finish reading data.
+Reading ./data/STATICS/STATICS_test.csv
+312 lines was read
+max_num_problems_answered: 1162
+num_problems: 1224
+The number of students is 104
+Finish reading data.
+batches=57
+ this train_epoch is over, Epoch    0,  AUC: 0.68123,  mean_loss: 0.79685
+batches=26
+ this test_epoch is over, Epoch    0,  AUC: 0.78449,  mean_loss: 0.53764
+batches=57
+ this train_epoch is over, Epoch    1,  AUC: 0.77024,  mean_loss: 0.58655
+batches=26
+ this test_epoch is over, Epoch    1,  AUC: 0.79506,  mean_loss: 0.51863
+batches=57
+ this train_epoch is over, Epoch    2,  AUC: 0.77383,  mean_loss: 0.58701
+batches=26
+ this test_epoch is over, Epoch    2,  AUC: 0.80125,  mean_loss: 0.54323
+batches=57
+ this train_epoch is over, Epoch    3,  AUC: 0.78766,  mean_loss: 0.70034
+batches=26
+ this test_epoch is over, Epoch    3,  AUC: 0.81351,  mean_loss: 0.66107
+batches=57
+ this train_epoch is over, Epoch    4,  AUC: 0.79622,  mean_loss: 0.95058
+batches=26
+ this test_epoch is over, Epoch    4,  AUC: 0.81367,  mean_loss: 0.94527
+batches=57
+ this train_epoch is over, Epoch    5,  AUC: 0.79835,  mean_loss: 1.059
+batches=26
+ this test_epoch is over, Epoch    5,  AUC: 0.82514,  mean_loss: 0.92077
+batches=57
+ this train_epoch is over, Epoch    6,  AUC: 0.79659,  mean_loss: 1.3966
+batches=26
+ this test_epoch is over, Epoch    6,  AUC: 0.81653,  mean_loss: 1.0381
+batches=57
+ this train_epoch is over, Epoch    7,  AUC: 0.80316,  mean_loss: 1.4754
+batches=26
+ this test_epoch is over, Epoch    7,  AUC: 0.81299,  mean_loss: 1.2011
+batches=57
+ this train_epoch is over, Epoch    8,  AUC: 0.80666,  mean_loss: 1.5888
+batches=26
+ this test_epoch is over, Epoch    8,  AUC: 0.81785,  mean_loss: 1.4218
+batches=57
+ this train_epoch is over, Epoch    9,  AUC: 0.81378,  mean_loss: 1.7271
+batches=26
+ this test_epoch is over, Epoch    9,  AUC: 0.82996,  mean_loss: 1.5791
+batches=57
+ this train_epoch is over, Epoch   10,  AUC: 0.8141,  mean_loss: 1.7113
+batches=26
+ this test_epoch is over, Epoch   10,  AUC: 0.83597,  mean_loss: 1.72
+batches=57
+ this train_epoch is over, Epoch   11,  AUC: 0.81854,  mean_loss: 1.778
+batches=26
+ this test_epoch is over, Epoch   11,  AUC: 0.83776,  mean_loss: 1.6947
+batches=57
+ this train_epoch is over, Epoch   12,  AUC: 0.8234,  mean_loss: 1.883
+batches=26
+ this test_epoch is over, Epoch   12,  AUC: 0.84629,  mean_loss: 1.5967
+batches=57
+ this train_epoch is over, Epoch   13,  AUC: 0.8287,  mean_loss: 1.9559
+batches=26
+ this test_epoch is over, Epoch   13,  AUC: 0.85059,  mean_loss: 1.8567
+batches=57
+ this train_epoch is over, Epoch   14,  AUC: 0.83258,  mean_loss: 1.9801
+batches=26
+ this test_epoch is over, Epoch   14,  AUC: 0.85541,  mean_loss: 1.7376
+batches=57
+ this train_epoch is over, Epoch   15,  AUC: 0.83463,  mean_loss: 2.1012
+batches=26
+ this test_epoch is over, Epoch   15,  AUC: 0.85472,  mean_loss: 1.8166
+batches=57
+
+Process finished with exit code 137 (interrupted by signal 9: SIGKILL)
