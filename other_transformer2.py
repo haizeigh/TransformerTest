@@ -50,7 +50,7 @@ parser.add_argument('--test_file', type=str, default='skill_id_test.csv',
 parser.add_argument("-csd", "--ckpt_save_dir", type=str, default=None,
                     help="checkpoint save directory")
 # a2009 a2009u a2015 synthetic statics assistment_challenge toy
-parser.add_argument('--dataset', type=str, default='a2009')
+parser.add_argument('--dataset', type=str, default='statics')
 args = parser.parse_args()
 
 # rnn_cells = {
@@ -331,13 +331,16 @@ class PositionwiseFeedForward(nn.Module):
 
 class Transformer(nn.Module):
 
-    def __init__(self, encoder, decoder, src_embed, tgt_embed, generator):
+    def __init__(self, encoder, decoder, src_embed, tgt_embed, generator, lambda_o, lambda_w1, lambda_w2):
         super(Transformer, self).__init__()
         self.encoder = encoder
         self.decoder = decoder
         self.src_embed = src_embed
         self.tgt_embed = tgt_embed
         self.generator = generator
+        self.lambda_o = Variable( torch.tensor(lambda_o) ,requires_grad=True)
+        self.lambda_w1 = Variable( torch.tensor(lambda_w1) ,requires_grad=True)    # regularization parameter for waviness for l1-norm
+        self.lambda_w2 = Variable(torch.tensor(lambda_w2) ,requires_grad=True)    # regularization parameter for waviness for l1-norm
 
     def forward(self, src, tgt, src_mask, tgt_mask):
         # src=tgt：[batch_size, max_length]
@@ -404,7 +407,10 @@ def make_model(src_vocab, tgt_vocab, N=6,
         nn.Sequential(Embeddings(d_model, tgt_vocab), c(position)),
         # 输出入的词有tgt_vocab这些种类，但是最后这里包含了正确和不正确的情况，是题目数量的2倍；
         # 使用 tgt_vocab / 2 表示每一个题目的完成概率  tgt_vocab / 2  = 题目数
-        Generator(d_model, int(num) ))
+        Generator(d_model, int(num) ),
+        lambda_o=args.lambda_o, lambda_w1=args.lambda_w1, lambda_w2=args.lambda_w2
+
+    )
 
     # 参数初始化
     for p in model.parameters():
@@ -468,7 +474,7 @@ def run_epoch(data_iter, model, loss_compute):
         # batch.tgt_y: t时刻
         # out: transformer输出的预测 输入序列[x1,x2...]   每一个x对应 m个可能性  输出序列[ [y1(内涵嵌入维度),y1(内涵嵌入维度),y3(内涵嵌入维度)...]  ]
         out = model.forward(batch.src, batch.trg, batch.src_mask, batch.trg_mask)
-        loss, _target_preds, _target_labels = loss_compute(out, batch, batch.ntokens)
+        loss, _target_preds, _target_labels = loss_compute(out, batch, batch.ntokens, model)
 
         y_pred += [p for p in _target_preds.tolist()]
         y_true += [t for t in _target_labels.tolist()]
@@ -551,10 +557,7 @@ def get_std_opt(model):
 class LabelSmoothing(nn.Module):
     "Implement label smoothing."
 
-    def __init__(self, size, padding_idx, smoothing=0.0,
-                 lambda_w1=0.0,
-                 lambda_w2=0.0,
-                 lambda_o=0.0,
+    def __init__(self, size, padding_idx, smoothing=0.0
                  ):
         super(LabelSmoothing, self).__init__()
         # self.criterion = nn.CrossEntropyLoss(reduction='sum')
@@ -566,11 +569,8 @@ class LabelSmoothing(nn.Module):
         self.size = size # 11
         self.true_dist = None
 
-        self.lambda_w1 = lambda_w1 # regularization parameter for waviness for l1-norm
-        self.lambda_w2 = lambda_w2 # regularization parameter for waviness for l1-norm
-        self.lambda_o = lambda_o # regularization parameter for objective function
 
-    def forward(self, x, target, y_seq_batch , y_corr_batch, batch):
+    def forward(self, x, target, y_seq_batch , y_corr_batch, batch, model:Transformer):
         # x====>[batch_size*max_length-1,vocab_size]
         # target====>[batch_size*max_length-1]
         assert x.size(1) == self.size
@@ -647,7 +647,7 @@ class LabelSmoothing(nn.Module):
         # current_cross_entropy2 = bce_loss(current_target_logits_softmax, current_target_labels)
         # current_cross_entropy3 = torch.mean(current_cross_entropy)
 
-        loss_2 = self.lambda_o * current_cross_entropy
+        loss_2 = model.lambda_o * current_cross_entropy
 
         loss += loss_2.float()
 
@@ -663,13 +663,13 @@ class LabelSmoothing(nn.Module):
         waviness_norm_l1 = torch.abs(preds[:, 1:, :] - preds[:, :-1, :])
         total_num_steps = x.size(0)
         waviness_l1 = torch.sum(waviness_norm_l1) / total_num_steps / self.size
-        loss_3 = self.lambda_w1 * waviness_l1
+        loss_3 = model.lambda_w1 * waviness_l1
         loss += loss_3
 
         # 当前结果的波动性
         waviness_norm_l2 = torch.pow(preds[:, 1:, :] - preds[:, :-1, :], 2)
         waviness_l2 = torch.sum(waviness_norm_l2) / total_num_steps / self.size
-        loss_4 = self.lambda_w2 * waviness_l2
+        loss_4 = model.lambda_w2 * waviness_l2
 
         loss += loss_4
         # return self.criterion(x, Variable(true_dist, requires_grad=False))
@@ -725,7 +725,7 @@ class SimpleLossCompute:
         self.criterion = criterion  # LabelSmoothing
         self.opt = opt
 
-    def __call__(self, x, batch, norm):
+    def __call__(self, x, batch, norm, model:Transformer):
         # x对应于out，也就是预测的时刻[batch_size, max_length-1, d_model]
         # y对应于tgt_y,也就是t时刻 [batch_size, max_length-1]
         x = self.generator(x)
@@ -743,7 +743,7 @@ class SimpleLossCompute:
 
         # loss = self.criterion(x.contiguous().view(-1, x.size(-1)),
         #                       y.contiguous().view(-1)) / norm
-        loss, target_logits, target_labels = self.criterion( x.contiguous().view(-1, x.size(-1) ), y.contiguous().view(-1) ,y_seq_batch , y_corr_batch, batch )
+        loss, target_logits, target_labels = self.criterion( x.contiguous().view(-1, x.size(-1) ), y.contiguous().view(-1) ,y_seq_batch , y_corr_batch, batch, model )
 
 #todo test : add train flag
         if batch.is_train:
@@ -764,11 +764,8 @@ num_problems = data.num_problems
 length = data.max_seq_length
 # V = 11
 # V = 8
-# network_config['lambda_w1'] = args.lambda_w1
-# network_config['lambda_w2'] = args.lambda_w2
-# network_config['lambda_o'] = args.lambda_o
 
-criterion = LabelSmoothing(size=num_problems , padding_idx=0, smoothing=0.0, lambda_w1=args.lambda_w1, lambda_w2=args.lambda_w2, lambda_o=args.lambda_o )
+criterion = LabelSmoothing(size=num_problems , padding_idx=0, smoothing=0.0)
 model = make_model(num_problems * 2, num_problems * 2, N=6)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
                     torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
@@ -782,7 +779,7 @@ for epoch in range(num_epochs):
     mean_loss, auc_score = run_epoch(data_gen(data_train), model,
               SimpleLossCompute(model.generator, criterion, model_opt))
     print( " this train_epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format( epoch, auc_score, mean_loss ))
-
+    print("  this train_epoch is over, lambda_o:{}, lambda_w1:{}, lambda_w2:{} ".format(model.lambda_o, model.lambda_w1, model.lambda_w2 ) )
     model.eval()
     # print(run_epoch(data_gen(V, 30, 5), model,
     # print(run_epoch(data_gen(data_test), model,
@@ -791,6 +788,7 @@ for epoch in range(num_epochs):
     test_mean_loss, test_auc_score = run_epoch(data_gen(data_test), model,
               SimpleLossCompute(model.generator, criterion, None))
     print( " this test_epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format( epoch, test_auc_score, test_mean_loss ))
+    print("  this test_epoch is over, lambda_o:{}, lambda_w1:{}, lambda_w2:{} ".format(model.lambda_o, model.lambda_w1, model.lambda_w2 ) )
     if test_auc_score > min_auc_score:
         min_auc_score = test_auc_score
 
