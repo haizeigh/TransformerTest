@@ -1,0 +1,137 @@
+/home/westwell/anaconda3/envs/TransformerTest38/bin/python /snap/pycharm-professional/260/plugins/python/helpers/pydev/pydevd.py --multiproc --qt-support=auto --client 127.0.0.1 --port 35607 --file /newdisk/PycharmProjects/TransformerTest/other_transformer2.py
+Connected to pydev debugger (build 212.5457.59)
+Reading ./data/STATICS/STATICS_train.csv
+687 lines was read
+max_num_problems_answered: 1181
+num_problems: 1224
+The number of students is 229
+Finish reading data.
+Reading ./data/STATICS/STATICS_test.csv
+312 lines was read
+max_num_problems_answered: 1162
+num_problems: 1224
+The number of students is 104
+Finish reading data.
+batches=57
+ this train_epoch is over, Epoch    0,  AUC: 0.67274,  mean_loss: 0.62207
+  this train_epoch is over, lambda_o:0.09165236353874207, lambda_w1:-0.00173863279633224, lambda_w2:2.995119094848633
+batches=26
+ this test_epoch is over, Epoch    0,  AUC: 0.78298,  mean_loss: 0.48629
+  this test_epoch is over, lambda_o:0.09165236353874207, lambda_w1:-0.00173863279633224, lambda_w2:2.995119094848633
+batches=57
+ this train_epoch is over, Epoch    1,  AUC: 0.77069,  mean_loss: 0.50405
+  this train_epoch is over, lambda_o:0.08068007975816727, lambda_w1:-0.0021599463652819395, lambda_w2:2.987679958343506
+batches=26
+ this test_epoch is over, Epoch    1,  AUC: 0.79104,  mean_loss: 0.47085
+  this test_epoch is over, lambda_o:0.08068007975816727, lambda_w1:-0.0021599463652819395, lambda_w2:2.987679958343506
+batches=57
+ this train_epoch is over, Epoch    2,  AUC: 0.76931,  mean_loss: 0.49857
+  this train_epoch is over, lambda_o:0.06290272623300552, lambda_w1:-0.0021637161262333393, lambda_w2:2.9734160900115967
+batches=26
+ this test_epoch is over, Epoch    2,  AUC: 0.79256,  mean_loss: 0.46185
+  this test_epoch is over, lambda_o:0.06290272623300552, lambda_w1:-0.0021637161262333393, lambda_w2:2.9734160900115967
+batches=57
+ this train_epoch is over, Epoch    3,  AUC: 0.77306,  mean_loss: 0.48769
+  this train_epoch is over, lambda_o:0.038184817880392075, lambda_w1:-0.002163739874958992, lambda_w2:2.940441370010376
+batches=26
+ this test_epoch is over, Epoch    3,  AUC: 0.79844,  mean_loss: 0.4459
+  this test_epoch is over, lambda_o:0.038184817880392075, lambda_w1:-0.002163739874958992, lambda_w2:2.940441370010376
+batches=57
+ this train_epoch is over, Epoch    4,  AUC: 0.77674,  mean_loss: 0.47743
+  this train_epoch is over, lambda_o:0.006463248282670975, lambda_w1:-0.002163739874958992, lambda_w2:2.843209981918335
+batches=26
+ this test_epoch is over, Epoch    4,  AUC: 0.80582,  mean_loss: 0.43905
+  this test_epoch is over, lambda_o:0.006463248282670975, lambda_w1:-0.002163739874958992, lambda_w2:2.843209981918335
+batches=57
+ this train_epoch is over, Epoch    5,  AUC: 0.78079,  mean_loss: 0.46571
+  this train_epoch is over, lambda_o:-0.009748434647917747, lambda_w1:-0.002163739874958992, lambda_w2:2.8050103187561035
+batches=26
+ this test_epoch is over, Epoch    5,  AUC: 0.81004,  mean_loss: 0.42577
+  this test_epoch is over, lambda_o:-0.009748434647917747, lambda_w1:-0.002163739874958992, lambda_w2:2.8050103187561035
+batches=57
+ this train_epoch is over, Epoch    6,  AUC: 0.79288,  mean_loss: 0.46277
+  this train_epoch is over, lambda_o:-0.009838803671300411, lambda_w1:-0.002163739874958992, lambda_w2:2.7315666675567627
+batches=26
+ this test_epoch is over, Epoch    6,  AUC: 0.81226,  mean_loss: 0.43198
+  this test_epoch is over, lambda_o:-0.009838803671300411, lambda_w1:-0.002163739874958992, lambda_w2:2.7315666675567627
+batches=57
+ this train_epoch is over, Epoch    7,  AUC: 0.79227,  mean_loss: 0.46831
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.6647510528564453
+batches=26
+ this test_epoch is over, Epoch    7,  AUC: 0.81886,  mean_loss: 0.44178
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.6647510528564453
+batches=57
+ this train_epoch is over, Epoch    8,  AUC: 0.79893,  mean_loss: 0.45886
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.6287009716033936
+batches=26
+ this test_epoch is over, Epoch    8,  AUC: 0.82274,  mean_loss: 0.43459
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.6287009716033936
+batches=57
+ this train_epoch is over, Epoch    9,  AUC: 0.8007,  mean_loss: 0.46959
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.584916830062866
+batches=26
+ this test_epoch is over, Epoch    9,  AUC: 0.82276,  mean_loss: 0.43304
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.584916830062866
+batches=57
+ this train_epoch is over, Epoch   10,  AUC: 0.80758,  mean_loss: 0.46792
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.53867506980896
+batches=26
+ this test_epoch is over, Epoch   10,  AUC: 0.83191,  mean_loss: 0.42771
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.53867506980896
+batches=57
+ this train_epoch is over, Epoch   11,  AUC: 0.81686,  mean_loss: 0.45756
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.497314929962158
+batches=26
+ this test_epoch is over, Epoch   11,  AUC: 0.83703,  mean_loss: 0.42453
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.497314929962158
+batches=57
+ this train_epoch is over, Epoch   12,  AUC: 0.8218,  mean_loss: 0.45003
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.4608869552612305
+batches=26
+ this test_epoch is over, Epoch   12,  AUC: 0.84268,  mean_loss: 0.42032
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.4608869552612305
+batches=57
+ this train_epoch is over, Epoch   13,  AUC: 0.82616,  mean_loss: 0.44784
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.426111936569214
+batches=26
+ this test_epoch is over, Epoch   13,  AUC: 0.84332,  mean_loss: 0.41901
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.426111936569214
+batches=57
+ this train_epoch is over, Epoch   14,  AUC: 0.8265,  mean_loss: 0.4532
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.3903205394744873
+batches=26
+ this test_epoch is over, Epoch   14,  AUC: 0.84457,  mean_loss: 0.41778
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.3903205394744873
+batches=57
+ this train_epoch is over, Epoch   15,  AUC: 0.83061,  mean_loss: 0.44651
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.3566203117370605
+batches=26
+ this test_epoch is over, Epoch   15,  AUC: 0.84778,  mean_loss: 0.41715
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.3566203117370605
+batches=57
+ this train_epoch is over, Epoch   16,  AUC: 0.83616,  mean_loss: 0.44038
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.3248088359832764
+batches=26
+ this test_epoch is over, Epoch   16,  AUC: 0.85119,  mean_loss: 0.4074
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.3248088359832764
+batches=57
+ this train_epoch is over, Epoch   17,  AUC: 0.83932,  mean_loss: 0.44054
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.2914626598358154
+batches=26
+ this test_epoch is over, Epoch   17,  AUC: 0.85285,  mean_loss: 0.40585
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.2914626598358154
+batches=57
+ this train_epoch is over, Epoch   18,  AUC: 0.84022,  mean_loss: 0.4401
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.2584891319274902
+batches=26
+ this test_epoch is over, Epoch   18,  AUC: 0.85377,  mean_loss: 0.41004
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.2584891319274902
+batches=57
+ this train_epoch is over, Epoch   19,  AUC: 0.8356,  mean_loss: 0.44554
+  this train_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.227555990219116
+batches=26
+ this test_epoch is over, Epoch   19,  AUC: 0.85253,  mean_loss: 0.40739
+  this test_epoch is over, lambda_o:-0.009839245118200779, lambda_w1:-0.002163739874958992, lambda_w2:2.227555990219116
+over
+
+Process finished with exit code 0

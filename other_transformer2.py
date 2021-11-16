@@ -101,6 +101,11 @@ network_config['lambda_w1'] = args.lambda_w1
 network_config['lambda_w2'] = args.lambda_w2
 network_config['lambda_o'] = args.lambda_o
 
+lambda_o = Variable( torch.tensor( args.lambda_o) ,requires_grad=True)
+lambda_w1 = Variable( torch.tensor( args.lambda_w1) ,requires_grad=True)    # regularization parameter for waviness for l1-norm
+lambda_w2 = Variable(torch.tensor( args.lambda_w2) ,requires_grad=True)    # regularization parameter for waviness for l1-norm
+relu = nn.ReLU(inplace=False)
+
 class Embeddings(nn.Module):
     def __init__(self, d_model, vocab):
         super(Embeddings, self).__init__()
@@ -473,8 +478,16 @@ def run_epoch(data_iter, model, loss_compute):
         # batch.tgt: t-1时刻
         # batch.tgt_y: t时刻
         # out: transformer输出的预测 输入序列[x1,x2...]   每一个x对应 m个可能性  输出序列[ [y1(内涵嵌入维度),y1(内涵嵌入维度),y3(内涵嵌入维度)...]  ]
+        # print("  this train_epoch is over, lambda_o:{}, lambda_w1:{}, lambda_w2:{} ".format(lambda_o,
+        #                                                                                     lambda_w1,
+        #                                                                                     lambda_w2))
+
         out = model.forward(batch.src, batch.trg, batch.src_mask, batch.trg_mask)
         loss, _target_preds, _target_labels = loss_compute(out, batch, batch.ntokens, model)
+
+        # print("  this train_epoch is over, lambda_o:{}, lambda_w1:{}, lambda_w2:{} ".format(lambda_o,
+        #                                                                                     lambda_w1,
+        #                                                                                     lambda_w2))
 
         y_pred += [p for p in _target_preds.tolist()]
         y_true += [t for t in _target_labels.tolist()]
@@ -647,7 +660,7 @@ class LabelSmoothing(nn.Module):
         # current_cross_entropy2 = bce_loss(current_target_logits_softmax, current_target_labels)
         # current_cross_entropy3 = torch.mean(current_cross_entropy)
 
-        loss_2 = model.lambda_o * current_cross_entropy
+        loss_2 = relu(lambda_o) * current_cross_entropy
 
         loss += loss_2.float()
 
@@ -663,13 +676,13 @@ class LabelSmoothing(nn.Module):
         waviness_norm_l1 = torch.abs(preds[:, 1:, :] - preds[:, :-1, :])
         total_num_steps = x.size(0)
         waviness_l1 = torch.sum(waviness_norm_l1) / total_num_steps / self.size
-        loss_3 = model.lambda_w1 * waviness_l1
+        loss_3 = relu(lambda_w1) * waviness_l1
         loss += loss_3
 
         # 当前结果的波动性
         waviness_norm_l2 = torch.pow(preds[:, 1:, :] - preds[:, :-1, :], 2)
         waviness_l2 = torch.sum(waviness_norm_l2) / total_num_steps / self.size
-        loss_4 = model.lambda_w2 * waviness_l2
+        loss_4 = relu(lambda_w2) * waviness_l2
 
         loss += loss_4
         # return self.criterion(x, Variable(true_dist, requires_grad=False))
@@ -768,7 +781,13 @@ length = data.max_seq_length
 criterion = LabelSmoothing(size=num_problems , padding_idx=0, smoothing=0.0)
 model = make_model(num_problems * 2, num_problems * 2, N=6)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
-                    torch.optim.Adam(model.parameters(), lr=0, betas=(0.9, 0.98), eps=1e-9))
+                    torch.optim.Adam([
+                        {'params': model.parameters()},
+                        {'params': lambda_o},
+                        {'params': lambda_w1},
+                        {'params': lambda_w2}
+                    ]
+                        , lr=0, betas=(0.9, 0.98), eps=1e-9))
 
 min_auc_score = 0
 # for epoch in range(10):
@@ -779,7 +798,7 @@ for epoch in range(num_epochs):
     mean_loss, auc_score = run_epoch(data_gen(data_train), model,
               SimpleLossCompute(model.generator, criterion, model_opt))
     print( " this train_epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format( epoch, auc_score, mean_loss ))
-    print("  this train_epoch is over, lambda_o:{}, lambda_w1:{}, lambda_w2:{} ".format(model.lambda_o, model.lambda_w1, model.lambda_w2 ) )
+    print("  this train_epoch is over, lambda_o:{}, lambda_w1:{}, lambda_w2:{} ".format(lambda_o, lambda_w1, lambda_w2 ) )
     model.eval()
     # print(run_epoch(data_gen(V, 30, 5), model,
     # print(run_epoch(data_gen(data_test), model,
@@ -788,7 +807,7 @@ for epoch in range(num_epochs):
     test_mean_loss, test_auc_score = run_epoch(data_gen(data_test), model,
               SimpleLossCompute(model.generator, criterion, None))
     print( " this test_epoch is over, Epoch {0:>4},  AUC: {1:.5},  mean_loss: {2:.5}".format( epoch, test_auc_score, test_mean_loss ))
-    print("  this test_epoch is over, lambda_o:{}, lambda_w1:{}, lambda_w2:{} ".format(model.lambda_o, model.lambda_w1, model.lambda_w2 ) )
+    print("  this test_epoch is over, lambda_o:{}, lambda_w1:{}, lambda_w2:{} ".format(lambda_o, lambda_w1, lambda_w2 ) )
     if test_auc_score > min_auc_score:
         min_auc_score = test_auc_score
 
