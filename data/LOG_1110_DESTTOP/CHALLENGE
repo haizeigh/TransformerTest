@@ -1,0 +1,80 @@
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch    2,  AUC: 0.62599,  mean_loss: 0.72195
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch    2,  AUC: 0.62449,  mean_loss: 0.72636
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch    3,  AUC: 0.62783,  mean_loss: 0.72005
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch    3,  AUC: 0.62981,  mean_loss: 0.71593
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch    4,  AUC: 0.63255,  mean_loss: 0.71861
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch    4,  AUC: 0.63459,  mean_loss: 0.71042
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch    5,  AUC: 0.6382,  mean_loss: 0.71585
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch    5,  AUC: 0.6376,  mean_loss: 0.71314
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch    6,  AUC: 0.63682,  mean_loss: 0.71654
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch    6,  AUC: 0.64052,  mean_loss: 0.70461
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch    7,  AUC: 0.64316,  mean_loss: 0.71528
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch    7,  AUC: 0.63939,  mean_loss: 0.70725
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch    8,  AUC: 0.64279,  mean_loss: 0.71362
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch    8,  AUC: 0.64269,  mean_loss: 0.70786
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch    9,  AUC: 0.64283,  mean_loss: 0.71378
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch    9,  AUC: 0.64341,  mean_loss: 0.70674
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch   10,  AUC: 0.6435,  mean_loss: 0.71397
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch   10,  AUC: 0.643,  mean_loss: 0.70392
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch   11,  AUC: 0.64687,  mean_loss: 0.71218
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch   11,  AUC: 0.64478,  mean_loss: 0.70145
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch   12,  AUC: 0.64839,  mean_loss: 0.71263
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch   12,  AUC: 0.6451,  mean_loss: 0.70081
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch   13,  AUC: 0.64971,  mean_loss: 0.71332
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch   13,  AUC: 0.645,  mean_loss: 0.70249
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683
+ this train_epoch is over, Epoch   14,  AUC: 0.64967,  mean_loss: 0.71406
+  this train_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=171
+ this test_epoch is over, Epoch   14,  AUC: 0.64626,  mean_loss: 0.70581
+  this test_epoch is over, lambda_o:0.10000000149011612, lambda_w1:0.30000001192092896, lambda_w2:3.0
+batches=683

@@ -589,7 +589,7 @@ class LabelSmoothing(nn.Module):
         assert x.size(1) == self.size
         x = torch.sigmoid(x)
 
-        x_clone = x.data.clone()
+        # x_clone = x.data.clone()
         # fill_就是填充
         # true_dist.fill_(self.smoothing / (self.size - 2))
         # scatter_修改元素
@@ -665,7 +665,7 @@ class LabelSmoothing(nn.Module):
         loss += loss_2.float()
 
         # 预测结果的波动性
-        preds = x_clone.contiguous().view(-1, batch.max_step , self.size )
+        preds = x.contiguous().view(-1, batch.max_step , self.size )
         # preds = torch.sigmoid(x_clone)
         # t1 = preds[:, 1:, :]
         # t2 = preds[:, :-1, :]
