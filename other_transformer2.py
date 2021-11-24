@@ -27,18 +27,18 @@ parser.add_argument("-kp", "--keep_prob", type=float, default=0.5,
                     help="Keep probability when training the network.")
 parser.add_argument("-mgn", "--max_grad_norm", type=float, default=5.0,
                     help="The maximum gradient norm allowed when clipping.")
-parser.add_argument("-lw1", "--lambda_w1", type=float, default=0.0030,
+parser.add_argument("-lw1", "--lambda_w1", type=float, default=0.00,
                     help="The lambda coefficient for the regularization waviness with l1-norm.")
-parser.add_argument("-lw2", "--lambda_w2", type=float, default=3.00,
+parser.add_argument("-lw2", "--lambda_w2", type=float, default=0.00,
                     help="The lambda coefficient for the regularization waviness with l2-norm.")
-parser.add_argument("-lo", "--lambda_o", type=float, default=0.10,
+parser.add_argument("-lo", "--lambda_o", type=float, default=0.0,
                     help="The lambda coefficient for the regularization objective.")
 # training configuration
 parser.add_argument("--num_runs", type=int, default=1,
                     help="Number of runs to repeat the experiment.")
 parser.add_argument("--num_epochs", type=int, default=20,
                     help="Maximum number of epochs to train the network.")
-parser.add_argument("--batch_size", type=int, default=4,
+parser.add_argument("--batch_size", type=int, default=6,
                     help="The mini-batch size used when training the network.")
 # data file configuration
 parser.add_argument('--data_dir', type=str, default='./data/',
@@ -50,7 +50,7 @@ parser.add_argument('--test_file', type=str, default='skill_id_test.csv',
 parser.add_argument("-csd", "--ckpt_save_dir", type=str, default=None,
                     help="checkpoint save directory")
 # a2009 a2009u a2015 synthetic statics assistment_challenge toy
-parser.add_argument('--dataset', type=str, default='statics')
+parser.add_argument('--dataset', type=str, default='a2009')
 args = parser.parse_args()
 
 # rnn_cells = {
@@ -101,9 +101,9 @@ network_config['lambda_w1'] = args.lambda_w1
 network_config['lambda_w2'] = args.lambda_w2
 network_config['lambda_o'] = args.lambda_o
 
-lambda_o = Variable( torch.tensor( args.lambda_o) ,requires_grad=True)
-lambda_w1 = Variable( torch.tensor( args.lambda_w1) ,requires_grad=True)    # regularization parameter for waviness for l1-norm
-lambda_w2 = Variable(torch.tensor( args.lambda_w2) ,requires_grad=True)    # regularization parameter for waviness for l1-norm
+lambda_o = Variable( torch.tensor( args.lambda_o) ,requires_grad=False)
+lambda_w1 = Variable( torch.tensor( args.lambda_w1) ,requires_grad=False)    # regularization parameter for waviness for l1-norm
+lambda_w2 = Variable(torch.tensor( args.lambda_w2) ,requires_grad=False)    # regularization parameter for waviness for l1-norm
 relu = nn.ReLU(inplace=False)
 
 class Embeddings(nn.Module):
@@ -780,6 +780,7 @@ length = data.max_seq_length
 
 criterion = LabelSmoothing(size=num_problems , padding_idx=0, smoothing=0.0)
 model = make_model(num_problems * 2, num_problems * 2, N=6)
+# model = make_model(num_problems * 2, num_problems * 2, N=8, h=16)
 model_opt = NoamOpt(model.src_embed[0].d_model, 1, 400,
                     torch.optim.Adam([
                         {'params': model.parameters()},
